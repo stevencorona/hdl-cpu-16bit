@@ -1,0 +1,25 @@
+CHIP Counter {
+	IN in[16], inc, load, reset;
+	OUT out[16];
+	
+	PARTS:
+	
+	// increment the value of the register
+	Inc16(in=regout, out=increg);
+	
+	// only use the incremented value if inc is set
+	Mux16(a=regout,b=increg,sel=inc, out=incin);
+	
+	// reset the value to 0 if reset is set
+	Mux16(a=incin,b=false,sel=reset,out=inreset);
+	
+	// set the value as in if load is set
+	Mux16(a=inreset,b=in,sel=load,out=inload);
+	
+	// push the new value into the register
+	Register(in=inload, load=true, out=regout);
+	
+	// hook up the registers output to the chips output
+	Mux16(a=regout,b=regout,sel=false,out=out);
+
+}
