@@ -1,15 +1,15 @@
 CHIP Alu {
-	IN x[16], y[16],	// Two 16-bit data inputs
-	zx,								// Zero the x input
-	nx,								// Negate the x input
-	zy,								// Zero the y input
-	ny,								// Negate the x input
-	f,								// Function code: 1 for Add, 0 for And
-	no;								// Negate the out output
+	IN x[16], y[16],  // Two 16-bit data inputs
+	zx,               // Zero the x input
+	nx,               // Negate the x input
+	zy,               // Zero the y input
+	ny,               // Negate the x input
+	f,                // Function code: 1 for Add, 0 for And
+	no;               // Negate the out output
 
-	OUT out[16],			// 16-bit output
-	zr,								// true iff out = 0
-	ng;								// true iff out < 0
+	OUT out[16],      // 16-bit output
+	zr,               // true iff out = 0
+	ng;               // true iff out < 0
 	
 	PARTS:
 	
