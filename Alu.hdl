@@ -1,0 +1,56 @@
+CHIP Alu {
+	IN x[16], y[16],	// Two 16-bit data inputs
+	zx,								// Zero the x input
+	nx,								// Negate the x input
+	zy,								// Zero the y input
+	ny,								// Negate the x input
+	f,								// Function code: 1 for Add, 0 for And
+	no;								// Negate the out output
+
+	OUT out[16],			// 16-bit output
+	zr,								// true iff out = 0
+	ng;								// true iff out < 0
+	
+	PARTS:
+	
+	// Zero the x input
+	Mux16(a=x,b=false,sel=zx,out=x1);
+	
+	// Negate the x input
+	Not16(in=x1,out=nx1);
+	Inc16(in=nx1,out=ix1);
+	Mux16(a=x1,b=ix1,sel=nx,out=x2);
+	
+	// Zero the y input
+	Mux16(a=y,b=false,sel=zy,out=y1);
+	
+	// Negate the y input
+	Not16(in=y1,out=ny1);
+	Inc16(in=ny1,out=iy1);
+	Mux16(a=y1,b=iy1,sel=ny,out=y2);
+	
+	// Carry out the addition
+	Add16(a=x2,b=y2,out=addout);
+	
+	// Carry out the and operation
+	And16(a=x2,b=y2,out=andout);
+	
+	// Decide which one is the output
+	Mux16(a=andout,b=addout,sel=f,out=finalcalc);
+
+	// Negate the final output
+	Not16(in=finalcalc,out=nfinalcalc);
+	Inc16(in=nfinalcalc,out=ifinalcalc);
+	Mux16(a=finalcalc,b=ifinalcalc,sel=no,out=finalout);
+	
+	// Set output flags
+	Or16Way(in=finalout,out=zr1);
+	Not(in=zr1,out=zr);
+	
+	And16(a=finalout,b=true,out=ng1);
+	Mux16(a=ng1,b=false,sel=false,out[15]=ng);
+	
+	// Hook up finalout to out
+	Mux16(a=finalout,b=finalout,sel=false,out=out);
+
+}
