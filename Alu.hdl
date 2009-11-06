@@ -43,12 +43,16 @@ CHIP Alu {
 	Inc16(in=nfinalcalc,out=ifinalcalc);
 	Mux16(a=finalcalc,b=ifinalcalc,sel=no,out=finalout);
 	
+	////////////////////////////
 	// Set output flags
+	////////////////////////////
 	Or16Way(in=finalout,out=zr1);
 	Not(in=zr1,out=zr);
 	
-	And16(a=finalout,b=true,out=ng1);
-	Mux16(a=ng1,b=false,sel=false,out[15]=ng);
+	// Are we returning a value that is < 0? The digits are
+	// in two's compliment so if the most significant bit is
+	// 1
+	And16(a=finalout,b=true,out[15]=ng);
 	
 	// Hook up finalout to out
 	Mux16(a=finalout,b=finalout,sel=false,out=out);
