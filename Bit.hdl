@@ -1,0 +1,14 @@
+CHIP Bit {
+	IN in, load;
+	OUT out;
+	
+	PARTS:
+
+	// Feedback loop- sets the value of the data flip-flop
+	Mux(a=dffout,b=in,sel=load,out=dffload);
+	DFF(in=dffload, out=dffout);
+
+	// This is the only way that I can get the output of DFF to
+	// go into the above feedback loop AND set out to have that value
+	Mux(a=dffout,b=dffout,sel=false,out=out);
+}
