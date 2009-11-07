@@ -1,15 +1,14 @@
 #import <Foundation/Foundation.h>
 #import "parser.h"
 
-int const A_COMMAND = 1;
-int const C_COMMAND = 2;
-int const L_COMMAND = 3;
-
 @implementation Parser
+
   -(id)initWithFile:(NSString*)file {
     [super init];
     
-    NSString *program = [NSString stringWithContentsOfFile:file];
+    NSString *program = [NSString stringWithContentsOfFile:file
+      encoding:NSASCIIStringEncoding 
+      error:NULL];
     commands = [program componentsSeparatedByString:@"\n"];
     commands_index = 0;
     
@@ -30,8 +29,8 @@ int const L_COMMAND = 3;
     commands_index++;
   }
   
-  -(int)commandType {
-    return 1;
+  -(COMMAND)commandType {
+    return L_COMMAND;
   }
   
   -(NSString*)symbol {

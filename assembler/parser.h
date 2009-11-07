@@ -1,8 +1,10 @@
 #import <Foundation/Foundation.h>
 
-extern int const A_COMMAND;
-extern int const C_COMMAND;
-extern int const L_COMMAND;
+typedef enum Commands {
+  A_COMMAND,
+  C_COMMAND,
+  L_COMMAND
+} COMMAND;
 
 @interface Parser : NSObject {
   NSArray *commands;
@@ -12,7 +14,7 @@ extern int const L_COMMAND;
 -(id)initWithFile: (NSString*)file;
 -(bool)hasMoreCommands;
 -(void)advance;
--(int)commandType;
+-(COMMAND)commandType;
 -(NSString*)symbol;
 -(NSString*)dest;
 -(NSString*)comp;

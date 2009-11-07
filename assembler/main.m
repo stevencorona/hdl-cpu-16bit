@@ -1,11 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "parser.h"
 
-// These constants come from the parser.h file
-extern const A_COMMAND;
-extern const C_COMMAND;
-extern const L_COMMAND;  
-
 int main( int argc, const char *argv[] ) {
     
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -19,8 +14,8 @@ int main( int argc, const char *argv[] ) {
     NSLog(@"advancing\n");
     if ( [parser commandType] == A_COMMAND ) {
       
-    } else if ( [parser commandType] == C_COMMAND ) {
-      
+    } else if ( [parser commandType] == L_COMMAND ) {
+      NSLog(@"here\n");
     }
     
   }
