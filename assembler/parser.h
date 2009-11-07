@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
 
+extern int const A_COMMAND;
+extern int const C_COMMAND;
+extern int const L_COMMAND;
+
 @interface Parser : NSObject {
   
 }
