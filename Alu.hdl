@@ -51,7 +51,7 @@ CHIP Alu {
 	
 	// Are we returning a value that is < 0? The digits are
 	// in two's compliment so if the most significant bit is
-	// 1
+	// 1, set ng as one. Otherwise, ng should be 0.
 	And16(a=finalout,b=true,out[15]=ng);
 	
 	// Hook up finalout to out
