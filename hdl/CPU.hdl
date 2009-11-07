@@ -34,5 +34,48 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-
+    
+    // Instruction looks like this:
+    // A Instr: 0 v v v  v v v v  v v v v  v v v v
+    // C Instr: 1 1 1 a  c c c c  c c d d  d j j j
+    
+    // Figure out if this is a Address instruction or a Compute Instruction.
+    // This is signified by the MSB- on = Compute, off = Address
+    Or(a=instruction[15], b=false, out=isAddrInstrT);
+    Not(in=isAddrInstrT,out=isAddrInstr);
+    
+    // If this is a compute instruction and the destination is A, let's set a
+    // flag. The destination is A when the D1 bit is on
+    And(a=instruction[5], b=true, out=isARegDest);
+    
+    // Now, OR isAddrInstr and isARegDest together to determine if we need to
+    // set something in the A Register
+    Or(a=isAddrInstr, b=isARegDest, out=setAReg);
+    
+    // Lastly, we need to figure out what to set in the A Reg
+    Mux16(a=true,b=instruction,sel=isAddrInstr,out=ARegSet);
+    
+    // Set A Register. Load bit is only set if it's a legal load
+    ARegister(in=ARegSet,load=setAReg,out=ARegOut);
+    
+    //DRegister(in=,load=,out=dreg);
+    
+    // Connect to the ALU
+    /**ALU(x=dreg,
+    y=,
+    zx,
+    nx,
+    zy,
+    ny,
+    f,
+    no,
+    out,
+    zr,
+    ng
+    );
+    
+    // Increment the program counter
+    // Missing the logic to support jumps
+    PC(in=false,inc=true,load=false,reset=reset,out=pc);
+**/
 }
