@@ -5,7 +5,8 @@ extern int const C_COMMAND;
 extern int const L_COMMAND;
 
 @interface Parser : NSObject {
-  
+  NSArray *commands;
+  int commands_index;
 }
 
 -(id)initWithFile: (NSString*)file;

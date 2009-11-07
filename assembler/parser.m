@@ -8,15 +8,26 @@ int const L_COMMAND = 3;
 @implementation Parser
   -(id)initWithFile:(NSString*)file {
     [super init];
+    
+    NSString *program = [NSString stringWithContentsOfFile:file];
+    commands = [program componentsSeparatedByString:@"\n"];
+    commands_index = 0;
+    
     return self;
   }
   
   -(bool)hasMoreCommands {
-    return true;
+    
+    if ( [commands count] == commands_index ) {
+      return false;
+    } else {
+      return true;
+    }
+    
   }
   
   -(void)advance {
-    
+    commands_index++;
   }
   
   -(int)commandType {
