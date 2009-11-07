@@ -9,12 +9,10 @@ M=1
 
 (LOOP)
 
-
-
 @R1 // assemble the bitmask
 D=M
 
-@pos // or the two numbers. if it's 1, we add. if it's 0, skip
+@pos // or @pos and @R1. if it's 1, we add. if it's 0, skip
 D=D&M
 
 @DOUBLE // skip if it's equal to 0
