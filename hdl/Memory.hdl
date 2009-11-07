@@ -1,0 +1,47 @@
+CHIP Memory {
+  IN in[16], load, address[15];
+  OUT out[16];
+  
+  PARTS:
+  
+  // Figure out if bit 13 and bit 14 are flipped to on.
+  // If 14 is on, it means address is mapped to the screen
+  // If 14&13 are on, it means address is mapped to the keyboard
+  
+  // AND the whole word by true and grab bits 13 & 14. They will be true if
+  // they were flipped on
+  And16(a[15]=false,a[0..14]=address,b=true,out[14]=usescreen,out[13]=usekbd);
+  
+  // Demux the load bit using usescreen. If use map is true, we won't load into
+  // ram.
+  DMux(in=load,sel=usescreen,a=loadram,b=loadother);
+  
+  // Hit up the RAM. Only load if it's in the target address range
+  RAM16K(in=in, load=loadram, address=address[0..13], out=outram);
+
+  // 16384-24575 is mapped to the screen
+  // 24576 is mapped to the keyboard
+  
+  // Figure out if the address is mapped to the screen or the keyboard
+  // AND bits 13 & 14 together. If they are both on, it'll set usekbd1 on
+  And(a=usescreen,b=usekbd,out=usekbd1);
+  
+  // DMux the whole thing to figure out if we use the load bit for the screen.
+  DMux4Way(in=loadother, sel[0]=usekbd1,a=loadscreen,b=false);
+  
+  
+  Screen(in=in,load=loadscreen,address=address[0..12],out=outscreen);
+  Keyboard(out=outkbd);
+  
+  // Connect the correct output to out
+  Mux4Way16(
+    a=outram,
+    b=outscreen,
+    c=false,
+    d=outkbd,
+    sel[0]=usescreen,
+    sel[1]=usekbd,
+    out=out);
+  
+  
+}
