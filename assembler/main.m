@@ -8,19 +8,31 @@ int main( int argc, const char *argv[] ) {
   NSString *filename = [NSString stringWithUTF8String:argv[1]];
   Parser *parser = [[Parser alloc] initWithFile:filename];
   
+  NSMutableArray *compiled = [[NSMutableArray alloc] init];
+  bool command[16];
+  
   // Loop until the parser runs out of assembly commands
   while ( [parser hasMoreCommands] == true ) {
-    [parser advance];
-    NSLog(@"advancing\n");
+
     if ( [parser commandType] == A_COMMAND ) {
+      command[15] = 0;
+      
+      [compiled addObject:binaryCommand];
       
     } else if ( [parser commandType] == L_COMMAND ) {
-      NSLog(@"here\n");
-    }
+    
+    
+      
+    } else if ( [parser commandType] == C_COMMAND ) {
+      
+    }   
+    
+    [parser advance];
     
   }
   
-  [pool release];
   
+  [pool release];
+    
   return 0;
 }

@@ -7,11 +7,11 @@ assembler: main.o parser.o code.o
 	${CC} ${CCFLAGS} main.o parser.o code.o -o bin/assembler
 
 main.o: main.m parser.h
-	${CC} ${CCFLAGS} -c main.m
+	${CC} -c main.m
 code.o: code.m
-	${CC} ${CCFLAGS} -c code.m
+	${CC} -c code.m
 parser.o: parser.m
-	${CC} ${CCFLAGS} -c parser.m
+	${CC} -c parser.m
 clean:
 	rm -f *.o
 	rm -f bin/assembler
